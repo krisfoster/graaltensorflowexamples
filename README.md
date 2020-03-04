@@ -81,4 +81,91 @@ $ cd dbximgs
 $ ./run-node.sh
 ```
 
+This should start up a web site that you can access on : [http://localhost:3000](http://localhost:3000)
 
+## Combining the Java Command Line Application, Easily, with Our Node App
+
+So now we have two things. How we do combine them? First, let us look at the Java command line app.
+We need to make a simple change to that that will allow it to be used as a "library".
+
+Within the file, `LabelImage.java`, look at the following:
+
+```
+    /**
+     * Allows the class to be used as a library within other application. All they
+     * needd to do is to use the static getClassifier() method to create an instance of
+     * the classifier.
+     * @param modelDir
+     * @return
+     */
+    public static LabelImage getClassifier(final String modelDir) {
+        final LabelImage classifier = new LabelImage(modelDir);
+        return classifier;
+    }
+```
+
+This method, as the docs suggest, allows another application to create an instance of the class.
+
+Next, we are going to look at how we can make this Java class, and other classes, available to
+the node graalvm instance that runs our app. So, let's take a look at the scrip that launches our
+node app, `dbximgs/run-node.sh`
+
+```
+#node --jvm --vm.cp=../jars/libtensorflow-1.14.0.jar:../target/classes --vm.Djava.library.path=../jni ./bin/www
+node ./bin/www
+```
+
+So if we **uncomment** the first line and **comment** out the second line. Let's take a look at
+the new line that now runs our node app:
+
+* `--jvm` : This tells the GraalVM node instance to run in non-native mode, so there will be full compatability with JAVA
+* `--vm.cp` : We can pass Java jars, classes that we want to be available to Node and our custom code  using this.
+* `--vm.Djava.library` : We can pass parameters to the underlying JVM using `--vm.D` parameters. Here we need to tell it about the native libaries etc that are needed by tensorflow
+
+We can find out the full details on all the parameters by running:
+
+```
+node --help
+node --help:expert
+```
+
+So let's check agian that our app works. Cool? All good.
+
+Next we need to see how to access our custom Java object from within the node Javascript.
+GraalVm makes this incredibly easy. Take a look at the following code snippet from
+`controller.js`:
+
+```
+// Now for the magic...
+  // This calls out to the java classes we compiled earlier
+  // These are the classes that call to the TensorFlow lib and make use of the
+  // linux shared libs
+  //var ClassiferClass = Java.type('org.tensorflow.examples.LabelImage');
+  //var classifier = ClassiferClass.getClassifier('../models');
+```
+
+If we uncomment out the two commented lines we can see that we are creating
+a native Java tyle, a class, directly in our Javascript using the `Java`
+implicit object. This is added by GraalVM.
+
+Once we have the type we can call it's methods and the types returned by it
+are directly usable within our code. Nice.
+
+Uncommenting the above lines brings the classifier into out code. We now need
+to use it. Look for the following code within `controller.js`:
+
+```
+        // The Java code returns a String description - which is turned automatically
+        // into a JS string
+        //var clazz = classifier == null ? path : classifier.classify(javaImgPath);
+        var clazz = "A Thing";
+```
+
+Again uncomment the first line out and comment out the second. The following line
+calls the classifier by passing in the path to the image (note the path is relative
+to where the node binary is run fgrom). It just returns a String, that JS knows how
+to use.
+
+```
+        var clazz = classifier == null ? path : classifier.classify(javaImgPath);
+```

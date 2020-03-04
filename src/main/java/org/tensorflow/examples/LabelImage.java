@@ -77,6 +77,13 @@ public class LabelImage {
         this.labels   = readAllLinesOrExit(Paths.get(modelDir, "imagenet_comp_graph_label_strings.txt"));
     }
 
+    /**
+     * Allows the class to be used as a library within other application. All they
+     * needd to do is to use the static getClassifier() method to create an instance of
+     * the classifier.
+     * @param modelDir
+     * @return
+     */
     public static LabelImage getClassifier(final String modelDir) {
         final LabelImage classifier = new LabelImage(modelDir);
         return classifier;

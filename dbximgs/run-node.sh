@@ -13,9 +13,10 @@
 #
 # We are not using npm, but all `npm start` does is call the run script from the package.json
 #
-echo "Running node with my custom Java!"
+
 # --jvm : make java interop available
 # --vm.cp : add to the classpath
 # --vm.Djava.library.path : Set JNI "plugins"
-#node --jvm --inspect --vm.cp=../jars/libtensorflow-1.14.0.jar:../target/classes --vm.Djava.library.path=../jni ./bin/www
-node ./bin/www
+echo "Starting site on http://localhost:3000"
+node --jvm --vm.cp=../jars/libtensorflow-1.14.0.jar:../target/classes --vm.Djava.library.path=../jni ./bin/www
+#node ./bin/www
