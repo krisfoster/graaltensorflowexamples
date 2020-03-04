@@ -1,7 +1,8 @@
 # Compiled class file
 *.class
 target/
-jni/*
+jni/*so*
+jni/LICENSE
 
 # Log file
 *.log
@@ -12,6 +13,7 @@ jni/*
 .project
 .settings/
 ./dbximgs/node_modules
+package-lock.json
 
 # BlueJ files
 *.ctxt

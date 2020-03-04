@@ -13,5 +13,5 @@ echo "Usage : pass in the path to an image"
 # This relies on the LD_LIBRARY_PATH being updated with access to the TensorFlow Linux Shared libs
 # * ./jni/libtensorflow_framework.so
 #
-java -cp jars/libtensorflow-1.14.0.jar:target/classes /
+java -cp jars/libtensorflow-1.14.0.jar:target/classes \
      -Djava.library.path=./jni org.tensorflow.examples.LabelImage ./models $1
