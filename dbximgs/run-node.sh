@@ -17,4 +17,5 @@ echo "Running node with my custom Java!"
 # --jvm : make java interop available
 # --vm.cp : add to the classpath
 # --vm.Djava.library.path : Set JNI "plugins"
-node --jvm --inspect --vm.cp=../jars/libtensorflow-1.14.0.jar:../target/classes --vm.Djava.library.path=../jni ./bin/www
+#node --jvm --inspect --vm.cp=../jars/libtensorflow-1.14.0.jar:../target/classes --vm.Djava.library.path=../jni ./bin/www
+node ./bin/www

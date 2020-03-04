@@ -10,8 +10,8 @@ module.exports.home = (req,res,next)=>{
   // This calls out to the java classes we compiled earlier
   // These are the classes that call to the TensorFlow lib and make use of the
   // linux shared libs
-  var ClassiferClass = Java.type('org.tensorflow.examples.LabelImage');
-  var classifier = ClassiferClass.getClassifier('../models');
+  //var ClassiferClass = Java.type('org.tensorflow.examples.LabelImage');
+  //var classifier = ClassiferClass.getClassifier('../models');
 
   fs.readdir(path, function(err, items) {
     for (var i=0; i<items.length; i++) {
@@ -21,7 +21,8 @@ module.exports.home = (req,res,next)=>{
 
         // The Java code returns a String description - which is turned automatically
         // into a JS string
-        var clazz = classifier == null ? path : classifier.classify(javaImgPath);
+        //var clazz = classifier == null ? path : classifier.classify(javaImgPath);
+        var clazz = "A Thing";
 
         files.push({path: path, title: clazz});
     }
