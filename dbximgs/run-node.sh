@@ -18,5 +18,5 @@
 # --vm.cp : add to the classpath
 # --vm.Djava.library.path : Set JNI "plugins"
 echo "Starting site on http://localhost:3000"
-node --jvm --vm.cp=../jars/libtensorflow-1.14.0.jar:../target/classes --vm.Djava.library.path=../jni ./bin/www
-#node ./bin/www
+#node --jvm --polyglot --vm.cp=../jars/libtensorflow-1.14.0.jar:../target/classes --vm.Djava.library.path=../jni ./bin/www
+node ./bin/www

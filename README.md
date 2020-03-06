@@ -169,3 +169,14 @@ to use.
 ```
         var clazz = classifier == null ? path : classifier.classify(javaImgPath);
 ```
+
+Now run the app again - what happens? We should see that the generic message for the pictures in
+the gallery is now replaced with an actual classification.
+
+## Make the App Truly Polyglot!
+
+## Conclusion
+
+Hopefully we have seen that interopation from Javascript to Java is easy. At the moment
+you can't really inspect the Java objects / classes that you bring into a JS program,
+but that may come.
